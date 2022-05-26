@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.myapplication.entity.InventList;
+import com.example.myapplication.entity.InventListAdapter;
+
 public class InventoryAC extends AppCompatActivity {
 
     Button BackGA;
@@ -18,7 +21,7 @@ public class InventoryAC extends AppCompatActivity {
     public  TextView TextIron;
     public  TextView TextCopper;
 
-    public ListView Resour;
+    public ListView listView;
     final String[] res = new String[4];
 
     public InventoryAC() {
@@ -28,24 +31,28 @@ public class InventoryAC extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
+        new Saved().Load_savesDB();
+
+        InventListAdapter dialogAdapter = new InventListAdapter(this, createDialogs());
+        ListView listView = findViewById(R.id.ListView);
+        listView.setAdapter(dialogAdapter);
 
         BackGA = (Button)findViewById(R.id.BackGAfI);
-
-        ListView Resour = findViewById(R.id.Resour);
-        new Saved().Load_savesDB();
-        Inden();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android. R.layout.simple_list_item_1, res);
-        Resour.setAdapter(adapter);
-
-
         BackGAfI();
     }
 
-    private void Inden(){
-        res[0] = "Dirt" + " " +Saved.getInventoryDirt().getNumb();
-        res[1] = "Stone" + " " + Saved.getInventoryStone().getNumb();
-        res[2] = "Iron" + " " + Saved.getInventoryIron().getNumb();
-        res[3] = "Copper" + " " + Saved.getInventoryCopper().getNumb();
+    InventList[] createDialogs(){
+        InventList[] dialogs = new InventList[4];
+        String[] names = {Saved.getInventoryDirt().getResource() ,Saved.getInventoryStone().getResource() ,Saved.getInventoryIron().getResource(),Saved.getInventoryCopper().getResource()};
+        int[] numbs = {Saved.getInventoryDirt().getNumb(),Saved.getInventoryStone().getNumb(),Saved.getInventoryIron().getNumb(),Saved.getInventoryCopper().getNumb()};
+
+        for(int i = 0; i < 5; i++){
+            InventList dialog = new InventList();
+            dialog.name = names[i];
+            dialog.numb = numbs[i];
+            dialogs[i] = dialog;
+        }
+        return dialogs;
     }
 
     private void BackGAfI() {

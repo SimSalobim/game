@@ -1,6 +1,14 @@
 package com.example.myapplication.entity;
 
 public class Inventory {
+    public static final String TABLE_NAME = "INVENTORYS";
+    public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_RESOURCE = "RESOURCE";
+    public static final String COLUMN_NUMB = "NUMB";
+    public static final int NUM_COLUMN_ID = 0;
+    public static final int NUM_COLUMN_RESOURCE = 1;
+    public static final int NUM_COLUMN_NUMB = 2;
+
     private int id;
     private String Resource;
     private int Numb;

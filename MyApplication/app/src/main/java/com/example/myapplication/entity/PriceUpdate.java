@@ -3,6 +3,12 @@ package com.example.myapplication.entity;
 import java.util.Date;
 
 public class PriceUpdate {
+    public static final String TABLE_NAME = "UPDATEPRICE";
+    public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_DATE = "DATE";
+    public static final int NUM_COLUMN_ID = 0;
+    public static final int NUM_COLUMN_DATE = 1;
+
     private int id;
     private Date date;
 

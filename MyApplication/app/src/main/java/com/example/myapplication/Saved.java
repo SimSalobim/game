@@ -69,9 +69,9 @@ public class Saved extends AppCompatActivity {
 
     private void Savedb(Inventory inventory){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(OpenHelper.COLUMN_RESOURCE, inventory.getResource());
-        contentValues.put(OpenHelper.COLUMN_NUMB, inventory.getNumb());
-        Game.sqLiteDatabase.update(OpenHelper.TABLE_NAME, contentValues, "ID = ?", new String[]{String.valueOf(inventory.getId())});
+        contentValues.put(Inventory.COLUMN_RESOURCE, inventory.getResource());
+        contentValues.put(Inventory.COLUMN_NUMB, inventory.getNumb());
+        Game.sqLiteDatabase.update(Inventory.TABLE_NAME, contentValues, "ID = ?", new String[]{String.valueOf(inventory.getId())});
     }
 
 //ЗАПИСЬ В ДБ
@@ -85,9 +85,9 @@ public class Saved extends AppCompatActivity {
 
     private Inventory Fuint(String ress) {
 
-        Cursor cursor = Game.sqLiteDatabase.query(OpenHelper.TABLE_NAME, null, OpenHelper.COLUMN_RESOURCE + " = '" + ress + "'", null, null, null, null);
+        Cursor cursor = Game.sqLiteDatabase.query(Inventory.TABLE_NAME, null, Inventory.COLUMN_RESOURCE + " = '" + ress + "'", null, null, null, null);
         cursor.moveToFirst();
-        Inventory inventory = new Inventory(cursor.getInt(OpenHelper.NUM_COLUMN_ID), cursor.getString(OpenHelper.NUM_COLUMN_RESOURCE), cursor.getInt(OpenHelper.NUM_COLUMN_NUMB));
+        Inventory inventory = new Inventory(cursor.getInt(Inventory.NUM_COLUMN_ID), cursor.getString(Inventory.NUM_COLUMN_RESOURCE), cursor.getInt(Inventory.NUM_COLUMN_NUMB));
         cursor.close();
 
         return inventory;

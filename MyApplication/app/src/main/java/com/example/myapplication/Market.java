@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.myapplication.databasehelpers.OpenHelperPriceReset;
-import com.example.myapplication.databasehelpers.OpenHelperPriceUpdate;
+import com.example.myapplication.databasehelpers.OpenHelper;
 import com.example.myapplication.entity.PriceReset;
+import com.example.myapplication.entity.PriceUpdate;
 
 import java.util.Date;
 
@@ -22,9 +22,8 @@ public class Market extends AppCompatActivity {
     Button Sell1;
     Button Sell10;
 
-    protected static SQLiteDatabase sqLiteDatabase;
-    private OpenHelperPriceReset openHelperPriceReset;
-    private OpenHelperPriceUpdate openHelperPriceUpdate;
+    private SQLiteDatabase sqLiteDatabase;
+    private OpenHelper openHelper;
 
     private static int uvel = 0;
     private static int ponij = 0;
@@ -38,11 +37,8 @@ public class Market extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
 
-        openHelperPriceReset = new OpenHelperPriceReset(this);
-        sqLiteDatabase = openHelperPriceReset.getWritableDatabase();
-
-        openHelperPriceUpdate = new OpenHelperPriceUpdate(this);
-        sqLiteDatabase = openHelperPriceUpdate.getWritableDatabase();
+        openHelper = new OpenHelper(this);
+        sqLiteDatabase = openHelper.getWritableDatabase();
 
         //sqLiteDatabase.execSQL("DROP TABLE " + OpenHelperPriceUpdate.TABLE_NAME);
         //openHelperPriceUpdate.onCreate(sqLiteDatabase);
@@ -89,9 +85,9 @@ public class Market extends AppCompatActivity {
 //ОБНОВЛЕНИЕ РЫНКА
 
     private void resetPrice(){
-        Cursor cursor = sqLiteDatabase.query(OpenHelperPriceReset.TABLE_NAME, null, null, null, null, null, OpenHelperPriceReset.COLUMN_DATE + " DESC", null);
+        Cursor cursor = sqLiteDatabase.query(PriceReset.TABLE_NAME, null, null, null, null, null, PriceReset.COLUMN_DATE + " DESC", null);
         cursor.moveToFirst();
-        PriceReset updatePrice = new PriceReset(cursor.getInt(OpenHelperPriceReset.NUM_COLUMN_ID), new Date(cursor.getLong(OpenHelperPriceReset.NUM_COLUMN_DATE)));
+        PriceReset updatePrice = new PriceReset(cursor.getInt(PriceReset.NUM_COLUMN_ID), new Date(cursor.getLong(PriceReset.NUM_COLUMN_DATE)));
         cursor.close();
 
         Date dateData = updatePrice.getDate();
@@ -106,8 +102,8 @@ public class Market extends AppCompatActivity {
                             ( datePres.getHours() < 8 &&  dateData.getHours() > 16) ) {
 
                              ContentValues contentValues = new ContentValues();
-                             contentValues.put(OpenHelperPriceReset.COLUMN_DATE, datePres.getTime());
-                             sqLiteDatabase.insert(OpenHelperPriceReset.TABLE_NAME, null, contentValues);
+                             contentValues.put(PriceReset.COLUMN_DATE, datePres.getTime());
+                             sqLiteDatabase.insert(PriceReset.TABLE_NAME, null, contentValues);
                     }
                 }
             }
@@ -116,9 +112,9 @@ public class Market extends AppCompatActivity {
     }
 
     private void updatePrice() {
-        Cursor cursor = sqLiteDatabase.query(OpenHelperPriceUpdate.TABLE_NAME, null, null, null, null, null, OpenHelperPriceUpdate.COLUMN_DATE + " DESC", null);
+        Cursor cursor = sqLiteDatabase.query(PriceUpdate.TABLE_NAME, null, null, null, null, null, PriceUpdate.COLUMN_DATE + " DESC", null);
         cursor.moveToFirst();
-        PriceReset updatePrice = new PriceReset(cursor.getInt(OpenHelperPriceUpdate.NUM_COLUMN_ID), new Date(cursor.getLong(OpenHelperPriceUpdate.NUM_COLUMN_DATE)));
+        PriceReset updatePrice = new PriceReset(cursor.getInt(PriceUpdate.NUM_COLUMN_ID), new Date(cursor.getLong(PriceUpdate.NUM_COLUMN_DATE)));
         cursor.close();
 
         Date dateData = updatePrice.getDate();
@@ -129,8 +125,8 @@ public class Market extends AppCompatActivity {
                 if ( datePres.getDay() - dateData.getDay() >= 0) {
                     if ( datePres.getHours() - dateData.getHours() >= 1){
                         ContentValues contentValues = new ContentValues();
-                        contentValues.put(OpenHelperPriceUpdate.COLUMN_DATE, datePres.getTime());
-                        sqLiteDatabase.insert(OpenHelperPriceUpdate.TABLE_NAME, null, contentValues);
+                        contentValues.put(PriceUpdate.COLUMN_DATE, datePres.getTime());
+                        sqLiteDatabase.insert(PriceUpdate.TABLE_NAME, null, contentValues);
                     }
                 }
             }
